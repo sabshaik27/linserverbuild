@@ -1,0 +1,29 @@
+---
+- hosts: localhost
+  gather_facts: no
+  collections:
+    - community.vmware
+  vars_files:
+    - all.yml
+  tasks:
+    - name: create VM from template
+      community.vmware.vmware_guest:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: no
+        datacenter: "{{ datacenter }}"
+        cluster: "{{ cluster }}"
+        name: "{{ new_vm_name }}"
+        folder: "/{{ datacenter }}/vm"
+        template: "{{ template_name }}"
+        state: poweredon
+        networks:
+          - name: "{{ vm_network }}"
+            ip: "{{ vm_ip }}"
+            netmask: "{{ vm_netmask }}"
+            gateway: "{{ vm_gateway }}"
+            dns_servers:
+              - "{{ vm_dns }}"
+        wait_for_ip_address: yes
+      delegate_to: localhost
