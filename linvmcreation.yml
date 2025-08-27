@@ -1,5 +1,5 @@
 ---
-- hosts: localhost
+- hosts: automationgroup
   gather_facts: no
   collections:
     - community.vmware
